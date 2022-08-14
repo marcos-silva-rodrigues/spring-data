@@ -1,5 +1,7 @@
 package com.marcos.rodrigues.spring.data.models;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import javax.persistence.*;
 
 @Entity
@@ -16,18 +18,21 @@ public class Person {
 
     @ManyToOne
     @JoinColumn(name = "event_id")
+    @JsonBackReference
     private Event eventId;
 
     public Person() {
     }
 
-    public Person(String name) {
+    public Person(String name, Event event) {
         this.name = name;
+        this.eventId = event;
     }
 
-    public Person(Long id, String name) {
+    public Person(Long id, String name,  Event event) {
         this.id = id;
         this.name = name;
+        this.eventId = event;
     }
 
     public Long getId() {
