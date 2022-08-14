@@ -5,6 +5,8 @@ import com.marcos.rodrigues.spring.data.models.Person;
 import com.marcos.rodrigues.spring.data.repository.EventRepository;
 import com.marcos.rodrigues.spring.data.repository.PersonRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -28,17 +30,16 @@ public class PersonController {
     }
 
     @GetMapping
-    public List<Person> findAll(@PathVariable Long eventId) {
-
+    public Page<Person> findAll(@PathVariable Long eventId, Pageable pageable) {
         Optional<Event> event = this.eventRepository.findById(eventId);
         if (event.isPresent()) {
-            List<Person> people = event.get()
-                    .getPeople()
-                    .stream()
-                    .collect(Collectors.toList());
-            return people;
+//            List<Person> people = event.get()
+//                    .getPeople()
+//                    .stream()
+//                    .collect(Collectors.toList());
+            return this.personRepository.findByEventId(pageable, event.get());
         }
-        return new ArrayList<>();
+        return Page.empty();
     }
 
     @PostMapping

@@ -3,6 +3,8 @@ package com.marcos.rodrigues.spring.data.controller;
 import com.marcos.rodrigues.spring.data.models.Event;
 import com.marcos.rodrigues.spring.data.repository.EventRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -19,8 +21,9 @@ public class EventController {
     }
 
     @GetMapping
-    public List<Event> findAll() {
-        return (List<Event>) this.eventRepository.findAll();
+    public Page<Event> findAll(Pageable pageable) {
+        Page<Event> events = this.eventRepository.findAll(pageable);
+        return events;
     }
 
     @PostMapping
